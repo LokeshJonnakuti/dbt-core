@@ -1,4 +1,3 @@
-import random
 
 from .run import ModelRunner, RunTask
 from .printer import (
@@ -19,6 +18,7 @@ from dbt.events.types import (
 from dbt.events.base_types import EventLevel
 from dbt.node_types import NodeType
 from dbt.contracts.results import NodeStatus
+import secrets
 
 
 class SeedRunner(ModelRunner):
@@ -91,7 +91,7 @@ class SeedTask(RunTask):
 
     def show_table(self, result):
         table = result.agate_table
-        rand_table = table.order_by(lambda x: random.random())
+        rand_table = table.order_by(lambda x: secrets.SystemRandom().random())
 
         schema = result.node.schema
         alias = result.node.alias
