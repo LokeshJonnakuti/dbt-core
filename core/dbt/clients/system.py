@@ -442,7 +442,13 @@ def run_cmd(cwd: str, cmd: List[str], env: Optional[Dict[str, Any]] = None) -> T
         exe_pth = shutil.which(cmd[0])
         if exe_pth:
             cmd = [os.path.abspath(exe_pth)] + list(cmd[1:])
-        proc = safe_command.run(subprocess.Popen, cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=full_env
+        proc = safe_command.run(
+            subprocess.Popen,
+            cmd,
+            cwd=cwd,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            env=full_env,
         )
 
         out, err = proc.communicate()
