@@ -1,9 +1,9 @@
 import os
 import sys
-import requests
 from distutils.util import strtobool
 from typing import Union
 from packaging.version import parse, Version
+from security import safe_requests
 
 if __name__ == "__main__":
 
@@ -14,8 +14,7 @@ if __name__ == "__main__":
     halt_on_missing = strtobool(os.environ.get("INPUT_HALT_ON_MISSING", "False"))
 
     # get package metadata from github
-    package_request = requests.get(
-        f"https://api.github.com/orgs/dbt-labs/packages/container/{package}/versions",
+    package_request = safe_requests.get(f"https://api.github.com/orgs/dbt-labs/packages/container/{package}/versions",
         auth=("", gh_token),
     )
     package_meta = package_request.json()
