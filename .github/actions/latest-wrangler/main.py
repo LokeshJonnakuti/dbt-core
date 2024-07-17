@@ -17,7 +17,7 @@ if __name__ == "__main__":
     package_request = requests.get(
         f"https://api.github.com/orgs/dbt-labs/packages/container/{package}/versions",
         auth=("", gh_token),
-    )
+    timeout=60)
     package_meta = package_request.json()
 
     # Log info if we don't get a 200
