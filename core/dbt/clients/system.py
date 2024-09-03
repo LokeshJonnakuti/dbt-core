@@ -26,6 +26,7 @@ from dbt.events.types import (
 from dbt.exceptions import DbtInternalError
 from dbt.utils import _connection_exception_retry as connection_exception_retry
 from pathspec import PathSpec  # type: ignore
+from security import safe_command
 
 if sys.platform == "win32":
     from ctypes import WinDLL, c_bool
@@ -441,8 +442,7 @@ def run_cmd(cwd: str, cmd: List[str], env: Optional[Dict[str, Any]] = None) -> T
         exe_pth = shutil.which(cmd[0])
         if exe_pth:
             cmd = [os.path.abspath(exe_pth)] + list(cmd[1:])
-        proc = subprocess.Popen(
-            cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=full_env
+        proc = safe_command.run(subprocess.Popen, cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=full_env
         )
 
         out, err = proc.communicate()
