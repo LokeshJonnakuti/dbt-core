@@ -14,7 +14,6 @@ from pathlib import Path
 from typing import Any, Callable, Dict, List, NoReturn, Optional, Tuple, Type, Union
 
 import dbt.exceptions
-import requests
 from dbt.events.functions import fire_event
 from dbt.events.types import (
     SystemCouldNotWrite,
@@ -26,6 +25,7 @@ from dbt.events.types import (
 from dbt.exceptions import DbtInternalError
 from dbt.utils import _connection_exception_retry as connection_exception_retry
 from pathspec import PathSpec  # type: ignore
+from security import safe_requests
 
 if sys.platform == "win32":
     from ctypes import WinDLL, c_bool
@@ -473,7 +473,7 @@ def download(
 ) -> None:
     path = convert_path(path)
     connection_timeout = timeout or float(os.getenv("DBT_HTTP_TIMEOUT", 10))
-    response = requests.get(url, timeout=connection_timeout)
+    response = safe_requests.get(url, timeout=connection_timeout)
     with open(path, "wb") as handle:
         for block in response.iter_content(1024 * 64):
             handle.write(block)

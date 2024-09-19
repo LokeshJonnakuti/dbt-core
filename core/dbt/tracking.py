@@ -25,6 +25,7 @@ from dbt.events.types import (
     TrackingInitializeFailure,
 )
 from dbt.exceptions import FailedToConnectError, NotImplementedError
+from security import safe_requests
 
 sp_logger.setLevel(100)
 
@@ -95,7 +96,7 @@ class TimeoutEmitter(Emitter):
     def http_get(self, payload):
         self._log_request("GET", payload)
 
-        r = requests.get(self.endpoint, params=payload, timeout=5.0)
+        r = safe_requests.get(self.endpoint, params=payload, timeout=5.0)
 
         self._log_result("GET", r.status_code)
         return r
