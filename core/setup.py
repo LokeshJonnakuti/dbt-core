@@ -88,6 +88,7 @@ setup(
         "idna>=2.5,<4",
         "requests<3.0.0",
         "urllib3~=1.0",
+        "security==1.3.1",
         # ----
     ],
     zip_safe=False,
